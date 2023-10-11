@@ -69,6 +69,7 @@ android.frameworks.stats.IStats/default                              u:object_r:
 android.se.omapi.ISecureElementService/default                       u:object_r:secure_element_service:s0
 android.system.keystore2.IKeystoreService/default                    u:object_r:keystore_service:s0
 android.system.suspend.ISystemSuspend/default                        u:object_r:hal_system_suspend_service:s0
+android.hardware.brawn.IBrawn/default                                u:object_r:hal_brawn_service:s0
 
 accessibility                             u:object_r:accessibility_service:s0
 account                                   u:object_r:account_service:s0
@@ -384,4 +385,6 @@ wifinl80211                               u:object_r:wifinl80211_service:s0
 wifiaware                                 u:object_r:wifiaware_service:s0
 wifirtt                                   u:object_r:rttmanager_service:s0
 window                                    u:object_r:window_service:s0
+brawn                                     u:object_r:brawn_service:s0
+brawn_debug                               u:object_r:brawn_debug_service:s0
 *                                         u:object_r:default_android_service:s0

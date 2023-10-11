@@ -1,0 +1,3 @@
+typeattribute brawn_client coredomain;
+
+init_daemon_domain(brawn_client)

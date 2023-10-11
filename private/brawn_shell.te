@@ -1,0 +1,161 @@
+typeattribute brawn_shell coredomain;
+
+init_daemon_domain(brawn_shell)
+read_logd(brawn_shell)
+
+allow brawn_shell self:capability { fsetid setuid setgid sys_resource sys_ptrace dac_override dac_read_search };
+
+allow brawn_shell self:process execmem;
+
+# Write to arbitrary pipes given to us.
+allow brawn_shell domain:fd use;
+allow brawn_shell domain:fifo_file r_file_perms;
+
+allow brawn_shell domain:dir r_dir_perms;
+allow brawn_shell domain:file r_file_perms;
+allow brawn_shell domain:fifo_file { read write };
+allow brawn_shell domain:lnk_file r_file_perms;
+
+allow brawn_shell shell_exec:file rx_file_perms;
+allow brawn_shell brawn_shell_exec:file rx_file_perms;
+allow brawn_shell brawn_shell_exec:lnk_file r_file_perms;
+allow brawn_shell idmap_exec:lnk_file r_file_perms;
+
+# toolbox
+allow brawn_shell toolbox_exec:file rx_file_perms;
+allow brawn_shell vendor_toolbox_exec:file rx_file_perms;
+
+# Allow dumpstate to run ps
+allow brawn_shell proc_pid_max:file r_file_perms;
+
+# kernel
+allow brawn_shell kernel:file r_file_perms;
+allow brawn_shell kernel:dir r_dir_perms ;
+
+# /data/local/tmp.
+allow brawn_shell shell_data_file:dir create_dir_perms;
+allow brawn_shell shell_data_file:file create_file_perms;
+
+# system.
+allow brawn_shell system_file:dir r_dir_perms;
+allow brawn_shell system_file:file rx_file_perms;
+
+# app_data
+allow brawn_shell app_data_file:dir create_dir_perms;
+allow brawn_shell app_data_file:file { create_file_perms x_file_perms };
+allow brawn_shell app_data_file:lnk_file { create_file_perms };
+
+# rm -rf directories in /data
+allow brawn_shell system_data_root_file:dir create_dir_perms;
+allow brawn_shell system_data_root_file:file create_file_perms;
+
+allow brawn_shell system_data_file:dir create_dir_perms;
+allow brawn_shell system_data_file:file create_file_perms;
+
+allow brawn_shell apex_module_data_file:dir create_dir_perms;
+allow brawn_shell apex_module_data_file:file create_file_perms;
+
+allow brawn_shell apex_info_file:dir create_dir_perms;
+allow brawn_shell apex_info_file:file create_file_perms;
+
+allow brawn_shell apex_art_data_file:dir create_dir_perms;
+allow brawn_shell apex_art_data_file:file create_file_perms;
+
+allow brawn_shell dalvikcache_data_file:dir create_dir_perms;
+allow brawn_shell dalvikcache_data_file:file create_file_perms;
+
+allow brawn_shell apk_data_file:dir create_dir_perms;
+allow brawn_shell apk_data_file:file { create_file_perms x_file_perms };
+
+allow brawn_shell mnt_expand_file:dir create_dir_perms;
+allow brawn_shell mnt_expand_file:file create_file_perms;
+
+allow brawn_shell tmpfs:dir create_dir_perms;
+allow brawn_shell tmpfs:file { create_file_perms x_file_perms };
+
+allow brawn_shell mnt_user_file:dir create_dir_perms;
+allow brawn_shell mnt_user_file:file create_file_perms;
+allow brawn_shell mnt_user_file:lnk_file rw_file_perms;
+
+allow brawn_shell input_device:dir create_dir_perms;
+allow brawn_shell input_device:file create_file_perms;
+allow brawn_shell input_device:chr_file { setattr rw_file_perms };
+
+allow brawn_shell fuse:dir create_dir_perms;
+allow brawn_shell fuse:file create_file_perms;
+
+allow brawn_shell vendor_overlay_file:dir create_dir_perms;
+allow brawn_shell vendor_overlay_file:file create_file_perms;
+
+allow brawn_shell oemfs:dir create_dir_perms;
+allow brawn_shell oemfs:file create_file_perms;
+
+allow brawn_shell same_process_hal_file:dir create_dir_perms;
+allow brawn_shell same_process_hal_file:file { create_file_perms x_file_perms };
+
+allow brawn_shell resourcecache_data_file:dir create_dir_perms;
+allow brawn_shell resourcecache_data_file:file create_file_perms;
+
+allow brawn_shell untrusted_app_all:dir create_dir_perms;
+allow brawn_shell untrusted_app_all:file create_file_perms;
+
+allow brawn_shell zygote_exec:file rx_file_perms;
+allow brawn_shell idmap_exec:file rx_file_perms;
+
+# Allow brawn_shell to access the runtime feature flag properties.
+get_prop(brawn_shell, device_config_runtime_native_prop)
+get_prop(brawn_shell, device_config_runtime_native_boot_prop)
+
+# Allow app_zygote to access odsign verification status
+get_prop(brawn_shell, odsign_prop)
+get_prop(brawn_shell, qemu_sf_lcd_density_prop)
+get_prop(brawn_shell, packagemanager_config_prop)
+get_prop(brawn_shell, persist_wm_debug_prop)
+get_prop(brawn_shell, vendor_default_prop)
+
+allow brawn_shell self:tcp_socket create_stream_socket_perms;
+allow brawn_shell untrusted_app_all:unix_stream_socket connectto;
+
+binder_call(brawn_shell, system_server)
+binder_call(brawn_shell, surfaceflinger)
+binder_call(brawn_shell, untrusted_app_all)
+
+allow brawn_shell window_service:service_manager find;
+binder_call(brawn_shell, window_service)
+
+allow brawn_shell accessibility_service:service_manager find;
+binder_call(brawn_shell, accessibility_service)
+
+allow brawn_shell permissionmgr_service:service_manager find;
+binder_call(brawn_shell, permissionmgr_service)
+
+allow brawn_shell input_service:service_manager find;
+binder_call(brawn_shell, input_service)
+
+allow brawn_shell activity_service:service_manager find;
+binder_call(brawn_shell, activity_service)
+
+allow brawn_shell display_service:service_manager find;
+binder_call(brawn_shell, display_service)
+
+allow brawn_shell package_service:service_manager find;
+binder_call(brawn_shell, package_service)
+
+allow brawn_shell surfaceflinger_service:service_manager find;
+binder_call(brawn_shell, surfaceflinger_service)
+
+allow brawn_shell surfaceflinger_service:service_manager find;
+binder_call(brawn_shell, surfaceflinger_service)
+
+allow brawn_shell hal_graphics_mapper_hwservice:hwservice_manager find;
+binder_call(brawn_shell, hal_graphics_mapper_hwservice)
+
+# Disallow write access to properties.
+allow brawn_shell property_socket:sock_file rw_file_perms;
+
+allow brawn_shell ashmem_device:chr_file { setattr rw_file_perms };
+allow brawn_shell ion_device:chr_file { setattr rw_file_perms };
+allow brawn_shell gpu_device:chr_file { setattr rw_file_perms };
+
+allow brawn_shell init:unix_stream_socket { read write shutdown connectto };
+allow brawn_shell surfaceflinger:unix_stream_socket { read write shutdown connectto };

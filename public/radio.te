@@ -34,3 +34,5 @@ hal_client_domain(radio, hal_telephony)
 
 # Used by TelephonyManager
 allow radio proc_cmdline:file r_file_perms;
+
+hal_client_domain(radio, hal_brawn)

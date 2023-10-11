@@ -1,0 +1,31 @@
+# HwBinder IPC from client to server, and callbacks
+binder_call(hal_brawn_client, hal_brawn_server)
+binder_call(hal_brawn_server, hal_brawn_client)
+
+hal_attribute_hwservice(hal_brawn, hal_brawn_hwservice)
+hal_attribute_service(hal_brawn, hal_brawn_service)
+
+binder_call(hal_brawn_server, servicemanager)
+binder_call(hal_brawn_client, servicemanager)
+
+# Disallow write access to properties.
+allow hal_brawn_server property_socket:sock_file write;
+allow hal_brawn_server init:unix_stream_socket { connectto read write };
+
+allow hal_brawn_server system_data_file:dir rw_dir_perms;
+allow hal_brawn_server system_data_file:file create_file_perms;
+
+allow hal_brawn_server apk_tmp_file:dir r_dir_perms;
+allow hal_brawn_server apk_tmp_file:file r_file_perms;
+
+# Set a property to reboot the device.
+set_prop(hal_brawn_server, powerctl_prop)
+
+allow hal_brawn_server self:capability { dac_override dac_read_search };
+
+# allow hal_brawn_server redsocks_exec:file rx_file_perms;
+allow hal_brawn_server vendor_shell_exec:file rx_file_perms;
+allow hal_brawn_server system_file:file rx_file_perms;
+
+allow hal_brawn_server proc_net:file rw_file_perms;
+allow hal_brawn_server usermodehelper:file r_file_perms;

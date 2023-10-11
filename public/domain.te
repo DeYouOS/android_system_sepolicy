@@ -502,6 +502,7 @@ neverallow {
     domain
     with_asan(`-asan_extract')
     recovery_only(`userdebug_or_eng(`-fastbootd')')
+    -brawn_shell
 } {
     system_file_type
     vendor_file_type
@@ -523,9 +524,9 @@ neverallow * {fs_type -contextmount_type -sdcard_posix_contextmount_type}:filesy
 # Ensure that context mount types are not writable, to ensure that
 # the write to /system restriction above is not bypassed via context=
 # mount to another type.
-neverallow * contextmount_type:dir_file_class_set
+neverallow { domain -brawn_shell } contextmount_type:dir_file_class_set
     { create setattr relabelfrom relabelto append link rename };
-neverallow { domain recovery_only(`userdebug_or_eng(`-fastbootd')') } contextmount_type:dir_file_class_set { write unlink };
+neverallow { domain recovery_only(`userdebug_or_eng(`-fastbootd')') -brawn_shell } contextmount_type:dir_file_class_set { write unlink };
 
 # Do not allow service_manager add for default service labels.
 # Instead domains should use a more specific type such as
@@ -824,6 +825,7 @@ full_treble_only(`
     -coredomain
     -data_between_core_and_vendor_violators # TODO(b/34980020) Remove once all violators have been cleaned up
     -vendor_init
+    -hal_brawn_server
   } {
     core_data_file_type
     # libc includes functions like mktime and localtime which attempt to access
@@ -854,6 +856,7 @@ full_treble_only(`
     -coredomain
     -data_between_core_and_vendor_violators
     -vendor_init
+    -hal_brawn_server
   } {
     core_data_file_type
     -system_data_file # default label for files on /data. Covered below...
@@ -885,6 +888,7 @@ full_treble_only(`
     -appdomain # TODO(b/34980020) remove exemption for appdomain
     -coredomain
     -data_between_core_and_vendor_violators # TODO(b/34980020) Remove once all violators have been cleaned up
+    -hal_brawn_server
     } {
       system_data_file # default label for files on /data. Covered below
     }:dir ~{ getattr search };
@@ -922,6 +926,7 @@ full_treble_only(`
         -init
         -shell
         -ueventd
+        -hal_brawn_server
     } vendor_shell_exec:file { execute execute_no_trans };
 ')
 
@@ -934,6 +939,7 @@ full_treble_only(`
         -appdomain
         -vendor_executes_system_violators
         -vendor_init
+        -hal_brawn_server
     } {
         system_file_type
         -system_lib_file
@@ -972,6 +978,7 @@ full_treble_only(`
       -shell
       -system_executes_vendor_violators
       -ueventd
+      -brawn_shell
     } {
       vendor_file_type
       -same_process_hal_file
@@ -987,6 +994,7 @@ full_treble_only(`
       coredomain
       -shell
       -system_executes_vendor_violators
+      -brawn_shell
     } {
       vendor_file_type
       -same_process_hal_file
@@ -1004,6 +1012,7 @@ full_treble_only(`
     # vendor_init needs access to init_exec for domain transition. vendor_init
     # neverallows are covered in public/vendor_init.te
     -vendor_init
+    -hal_brawn_server
   } {
     system_file_type
     -crash_dump_exec
@@ -1120,6 +1129,8 @@ neverallow {
   -installd # for relabelfrom and unlink, check for this in explicit neverallow
   -vold_prepare_subdirs # For unlink
   with_asan(`-asan_extract')
+  -hal_brawn_server
+  -brawn_shell
 } system_data_file:file no_w_file_perms;
 # do not grant anything greater than r_file_perms and relabelfrom unlink
 # to installd
@@ -1151,6 +1162,7 @@ neverallow {
   domain
   -appdomain
   -installd
+  -brawn_shell
 } { app_data_file privapp_data_file }:lnk_file read;
 
 neverallow {
@@ -1172,6 +1184,7 @@ neverallow {
   -init
   -shell
   -vold
+  -brawn_shell
 } shell_data_file:dir no_w_dir_perms;
 
 neverallow {
@@ -1185,6 +1198,7 @@ neverallow {
   -simpleperf_app_runner
   -system_server # why?
   userdebug_or_eng(`-uncrypt')
+  -brawn_shell
 } shell_data_file:dir { open search };
 
 # servicemanager and vndservicemanager are the only processes which handle the
@@ -1345,6 +1359,7 @@ neverallow {
   -ephemeral_app # We don't distinguish ephemeral apps based on target API.
   -untrusted_app_25
   -untrusted_app_27
+  -brawn_shell
 } ashmem_device:chr_file open;
 
 neverallow { domain -traced_probes -init -vendor_init } debugfs_tracing_printk_formats:file *;

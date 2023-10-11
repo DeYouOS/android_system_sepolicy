@@ -171,6 +171,7 @@
 /dev/socket/zygote_secondary	u:object_r:zygote_socket:s0
 /dev/socket/usap_pool_primary	u:object_r:zygote_socket:s0
 /dev/socket/usap_pool_secondary	u:object_r:zygote_socket:s0
+/dev/socket/brawn_shell	        u:object_r:brawn_shell_socket:s0
 /dev/spdif_out.*	u:object_r:audio_device:s0
 /dev/sys/block/by-name/rootdisk(/.*)?	u:object_r:rootdisk_sysdev:s0
 /dev/sys/block/by-name/userdata(/.*)?	u:object_r:userdata_sysdev:s0
@@ -298,7 +299,7 @@
 /system/bin/mtpd	u:object_r:mtp_exec:s0
 /system/bin/pppd	u:object_r:ppp_exec:s0
 /system/bin/racoon	u:object_r:racoon_exec:s0
-/system/xbin/su		u:object_r:su_exec:s0
+# /system/xbin/su		u:object_r:su_exec:s0
 /system/bin/dnsmasq     u:object_r:dnsmasq_exec:s0
 /system/bin/linker(64)? u:object_r:system_linker_exec:s0
 /system/bin/linkerconfig u:object_r:linkerconfig_exec:s0
@@ -383,6 +384,10 @@
 /system/bin/cardisplayproxyd     u:object_r:automotive_display_service_exec:s0
 /system/bin/evsmanagerd          u:object_r:evsmanagerd_exec:s0
 /system/bin/android\.automotive\.evs\.manager@1\.[0-9]+ u:object_r:evsmanagerd_exec:s0
+
+/system/bin/brawnClient          u:object_r:brawn_client_exec:s0
+/system/xbin/brawnShell          u:object_r:brawn_shell_exec:s0
+/system/xbin/su		             u:object_r:brawn_shell_exec:s0
 
 #############################
 # Vendor files

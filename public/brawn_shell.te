@@ -1,0 +1,9 @@
+# brawn_shell - battery/charger monitoring service daemon
+type brawn_shell, domain, mlstrustedsubject;
+type brawn_shell_exec, system_file_type, exec_type, file_type;
+
+# allow brawn_shell to call hal_brawn
+hal_client_domain(brawn_shell, hal_brawn)
+
+# allow Client to call hal_brawn
+hal_client_domain(brawn_shell, hal_configstore)

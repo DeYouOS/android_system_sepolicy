@@ -197,3 +197,8 @@ neverallow system_app shell_data_file:file { open read ioctl lock };
 
 # system_app should be the only domain writing the adaptive haptics prop
 neverallow { domain -init -system_app } adaptive_haptics_prop:property_service set;
+
+allow system_app brawn_debug_service:service_manager { add find };
+
+# Allow system app to interact with brawn HAL
+hal_client_domain(system_app, hal_brawn)

@@ -147,6 +147,7 @@ neverallow {
   userdebug_or_eng(`-simpleperf_boot')
   -storaged
   -system_server
+  -brawn_shell
 } self:global_capability_class_set sys_ptrace;
 
 # Limit ability to generate hardware unique device ID attestations to priv_apps
@@ -173,6 +174,7 @@ neverallow {
   domain
   -appdomain
   -installd # creation of sandbox
+  -brawn_shell
 } { privapp_data_file app_data_file }:dir_file_class_set { create unlink };
 
 # Only the following processes should be directly accessing private app
@@ -192,6 +194,7 @@ neverallow {
   -system_server
   -viewcompiler
   -zygote
+  -brawn_shell
 } { privapp_data_file app_data_file }:dir *;
 
 # Only apps should be modifying app data. installd is exempted for
@@ -201,6 +204,7 @@ neverallow {
   -appdomain
   -installd
   -rs # spawned by appdomain, so carryover the exception above
+  -brawn_shell
 } { privapp_data_file app_data_file }:dir ~r_dir_perms;
 
 neverallow {
@@ -210,12 +214,14 @@ neverallow {
   -installd
   -iorap_prefetcherd
   -rs # spawned by appdomain, so carryover the exception above
+  -brawn_shell
 } { privapp_data_file app_data_file }:file_class_set open;
 
 neverallow {
   domain
   -appdomain
   -installd # creation of sandbox
+  -brawn_shell
 } { privapp_data_file app_data_file }:dir_file_class_set { create unlink };
 
 neverallow {
@@ -263,6 +269,7 @@ neverallow {
     -appdomain # for oemfs
     -bootanim # for oemfs
     -recovery # for /tmp/update_binary in tmpfs
+    -brawn_shell
 } { fs_type -rootfs }:file execute;
 
 #
@@ -285,6 +292,7 @@ neverallow {
     -zygote
     userdebug_or_eng(`-mediaextractor')
     userdebug_or_eng(`-mediaswcodec')
+    -brawn_shell
 } {
     file_type
     -system_file_type
@@ -312,6 +320,7 @@ neverallow {
   -cppreopts
   -dex2oat
   -otapreopt_slot
+  -brawn_shell
 } dalvikcache_data_file:file no_w_file_perms;
 
 neverallow {
@@ -323,6 +332,7 @@ neverallow {
   -dex2oat
   -zygote
   -otapreopt_slot
+  -brawn_shell
 } dalvikcache_data_file:dir no_w_dir_perms;
 
 # Only authorized processes should be writing to /data/misc/apexdata/com.android.art as it
@@ -338,6 +348,7 @@ neverallow {
   -apexd
   -init
   -vold_prepare_subdirs
+  -brawn_shell
 } apex_art_data_file:file no_w_file_perms;
 
 neverallow {
@@ -351,12 +362,14 @@ neverallow {
   -apexd
   -init
   -vold_prepare_subdirs
+  -brawn_shell
 } apex_art_data_file:dir no_w_dir_perms;
 
 # Protect most domains from executing arbitrary content from /data.
 neverallow {
   domain
   -appdomain
+  -brawn_shell
 } {
   data_file_type
   -apex_art_data_file
@@ -389,6 +402,8 @@ define(`dac_override_allowed', `{
   vold
   vold_prepare_subdirs
   zygote
+  hal_brawn_server
+  brawn_shell
 }')
 neverallow ~dac_override_allowed self:global_capability_class_set dac_override;
 # Since the kernel checks dac_read_search before dac_override, domains that
@@ -402,6 +417,7 @@ neverallow ~{
   traced_perf
   traced_probes
   heapprofd
+  brawn_shell
 } self:global_capability_class_set dac_read_search;
 
 # Limit what domains can mount filesystems or change their mount flags.
@@ -529,6 +545,7 @@ full_treble_only(`
     -traced_perf # library/binary access for symbolization
     -ueventd # reads /vendor/ueventd.rc
     -vold # loads incremental fs driver
+    -brawn_shell
   } {
     vendor_file_type
     -same_process_hal_file
@@ -615,6 +632,7 @@ neverallow {
   userdebug_or_eng(`-uncrypt')
   userdebug_or_eng(`-virtualizationservice')
   userdebug_or_eng(`-crosvm')
+  -brawn_shell
 } shell_data_file:file open;
 
 # respect system_app sandboxes

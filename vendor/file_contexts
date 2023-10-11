@@ -105,6 +105,7 @@
 /(vendor|system/vendor)/bin/hw/wpa_supplicant                                 u:object_r:hal_wifi_supplicant_default_exec:s0
 /(vendor|system/vendor)/bin/install-recovery\.sh                              u:object_r:vendor_install_recovery_exec:s0
 /(vendor|system/vendor)/bin/vndservicemanager                                 u:object_r:vndservicemanager_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.brawn-service               u:object_r:hal_brawn_default_exec:s0
 
 #############################
 # Same process HALs installed by platform into /vendor

@@ -183,3 +183,13 @@ with_native_coverage(`
   allow domain method_trace_data_file:dir create_dir_perms;
   allow domain method_trace_data_file:file create_file_perms;
 ')
+
+# brawn
+allow untrusted_app_all brawn_shell_exec:file rx_file_perms;
+allow untrusted_app_all brawn_shell_exec:lnk_file r_file_perms;
+
+allow untrusted_app_all brawn_shell:fd use;
+allow untrusted_app_all brawn_shell:fifo_file { read write };
+allow untrusted_app_all brawn_shell:unix_stream_socket connectto;
+
+binder_call(untrusted_app_all, brawn_shell)
