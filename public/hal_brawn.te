@@ -12,11 +12,24 @@ binder_call(hal_brawn_client, servicemanager)
 allow hal_brawn_server property_socket:sock_file write;
 allow hal_brawn_server init:unix_stream_socket { connectto read write };
 
-allow hal_brawn_server system_data_file:dir rw_dir_perms;
-allow hal_brawn_server system_data_file:file create_file_perms;
+# Read and write /app
+allow hal_brawn_server app_data_file:dir create_dir_perms;
+allow hal_brawn_server app_data_file:{ file lnk_file } create_file_perms;
 
-allow hal_brawn_server apk_tmp_file:dir r_dir_perms;
-allow hal_brawn_server apk_tmp_file:file r_file_perms;
+# Read and write /adb
+allow hal_brawn_server adb_data_file:dir create_dir_perms;
+allow hal_brawn_server adb_data_file:{ file lnk_file } create_file_perms;
+
+# Read and write /data
+allow hal_brawn_server system_data_file:dir create_dir_perms;
+allow hal_brawn_server system_data_file:{ file lnk_file } create_file_perms;
+
+# Read and write /data/data subdirectory.
+allow hal_brawn_server system_app_data_file:dir create_dir_perms;
+allow hal_brawn_server system_app_data_file:{ file lnk_file } create_file_perms;
+
+allow hal_brawn_server apk_tmp_file:dir create_dir_perms;
+allow hal_brawn_server apk_tmp_file:{ file lnk_file } create_file_perms;
 
 # Set a property to reboot the device.
 set_prop(hal_brawn_server, powerctl_prop)
@@ -29,3 +42,6 @@ allow hal_brawn_server system_file:file rx_file_perms;
 
 allow hal_brawn_server proc_net:file rw_file_perms;
 allow hal_brawn_server usermodehelper:file r_file_perms;
+
+get_prop(hal_brawn_server, system_prop)
+get_prop(hal_brawn_server, default_prop)

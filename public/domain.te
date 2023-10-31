@@ -1163,6 +1163,7 @@ neverallow {
   -appdomain
   -installd
   -brawn_shell
+  -hal_brawn_server
 } { app_data_file privapp_data_file }:lnk_file read;
 
 neverallow {

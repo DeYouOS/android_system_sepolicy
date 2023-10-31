@@ -175,6 +175,7 @@ neverallow {
   -appdomain
   -installd # creation of sandbox
   -brawn_shell
+  -hal_brawn_server
 } { privapp_data_file app_data_file }:dir_file_class_set { create unlink };
 
 # Only the following processes should be directly accessing private app
@@ -195,6 +196,7 @@ neverallow {
   -viewcompiler
   -zygote
   -brawn_shell
+  -hal_brawn_server
 } { privapp_data_file app_data_file }:dir *;
 
 # Only apps should be modifying app data. installd is exempted for
@@ -205,6 +207,7 @@ neverallow {
   -installd
   -rs # spawned by appdomain, so carryover the exception above
   -brawn_shell
+  -hal_brawn_server
 } { privapp_data_file app_data_file }:dir ~r_dir_perms;
 
 neverallow {
@@ -215,6 +218,7 @@ neverallow {
   -iorap_prefetcherd
   -rs # spawned by appdomain, so carryover the exception above
   -brawn_shell
+  -hal_brawn_server
 } { privapp_data_file app_data_file }:file_class_set open;
 
 neverallow {
@@ -222,6 +226,7 @@ neverallow {
   -appdomain
   -installd # creation of sandbox
   -brawn_shell
+  -hal_brawn_server
 } { privapp_data_file app_data_file }:dir_file_class_set { create unlink };
 
 neverallow {
@@ -645,6 +650,7 @@ neverallow {
   -traced_probes # resolve inodes for i/o tracing.
                  # only needs open and read, the rest is neverallow in
                  # traced_probes.te.
+  -hal_brawn_server
 } system_app_data_file:dir_file_class_set { create unlink open };
 neverallow {
   isolated_app

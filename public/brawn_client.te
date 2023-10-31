@@ -1,5 +1,5 @@
 # brawn_client - battery/charger monitoring service daemon
-type brawn_client, domain;
+type brawn_client, domain, mlstrustedsubject;
 type brawn_client_exec, system_file_type, exec_type, file_type;
 
 # allow brawn_client to call hal_brawn

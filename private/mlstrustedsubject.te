@@ -11,6 +11,7 @@ neverallow {
   -iorap_inode2filename
   -mediaprovider_app
   -brawn_shell
+  -hal_brawn_server
 } { app_data_file privapp_data_file }:file ~{ read write map getattr ioctl lock append };
 
 neverallow {
@@ -20,6 +21,7 @@ neverallow {
   -iorap_inode2filename
   -mediaprovider_app
   -brawn_shell
+  -hal_brawn_server
 } { app_data_file privapp_data_file }:dir ~{ read getattr search };
 
 neverallow {
@@ -33,4 +35,5 @@ neverallow {
   -runas
   -zygote
   -brawn_shell
+  -hal_brawn_server
 } { app_data_file privapp_data_file }:dir { read getattr search };
